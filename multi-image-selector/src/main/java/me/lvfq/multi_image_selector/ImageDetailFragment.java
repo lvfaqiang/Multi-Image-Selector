@@ -68,8 +68,6 @@ public class ImageDetailFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        String urlGif = "http://img.blog.csdn.net/20170404122232820?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbHZfZnE=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast";
-        String url = "http://img.blog.csdn.net/20170325011538429?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbHZfZnE=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast";
         Glide.with(getActivity()).load(mImageUrl).placeholder(R.drawable.default_error).into(new GlideDrawableImageViewTarget(mImageView) {
 
             @Override
