@@ -7,11 +7,11 @@
 
 依赖地址
 
-    compile 'com.lfq:MultiImageSelector:1.0' 
+    compile 'com.lfq:MultiImageSelector:1.0' 
     
-引用 Glide 版本：
+引用 Glide 版本
 
-    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
 
 项目的 manifest 文件中，添加配置 Activity:
 
