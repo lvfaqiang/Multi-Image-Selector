@@ -1,8 +1,10 @@
 package me.lvfq.multi_image_selector;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -12,9 +14,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.ListPopupWindow;
@@ -50,6 +54,8 @@ import me.lvfq.multi_image_selector.utils.TimeUtils;
 public class MultiImageSelectorFragment extends Fragment {
 
     private static final String TAG = "MultiImageSelector";
+
+    private static final int PERMISSION_CAMRA = 0x002;
 
     /**
      * 最大图片选择次数，int类型
@@ -255,7 +261,11 @@ public class MultiImageSelectorFragment extends Fragment {
                 if (mImageAdapter.isShowCamera()) {
                     // 如果显示照相机，则第一个Grid显示为照相机，处理特殊逻辑
                     if (i == 0) {
-                        showCameraAction();
+                        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                            requestPermissions(new String[]{Manifest.permission.CAMERA}, PERMISSION_CAMRA);
+                        } else {
+                            showCameraAction();
+                        }
                     } else {
                         // 正常操作
                         Image image = (Image) adapterView.getAdapter().getItem(i);
@@ -270,6 +280,18 @@ public class MultiImageSelectorFragment extends Fragment {
         });
 
         mFolderAdapter = new FolderAdapter(getActivity());
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == PERMISSION_CAMRA) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                showCameraAction();
+            } else {
+//                throw new RuntimeException("No camera call system permissions");
+                Toast.makeText(getActivity(), "No camera call system permissions", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     /**

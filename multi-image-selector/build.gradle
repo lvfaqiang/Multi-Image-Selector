@@ -7,7 +7,7 @@ android {
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 22
+        targetSdkVersion 23
     }
     buildTypes {
         release {
@@ -34,7 +34,7 @@ publish {
     userOrg = 'lvfaqiang'//bintray.com注册的用户名
     groupId = 'com.lfq'//jcenter上的路径
     artifactId = 'MultiImageSelector'//上传到 Jcenter 的项目名称
-    publishVersion = '1.0'//版本号
+    publishVersion = '1.1'//版本号
     desc = '整理图片选择和查看大图的功能'//选填
     website = 'https://github.com/lvfaqiang/Multi-Image-Selector'//这里是必填；可以填写你 Github 上的当前项目地址。注意格式必须是 github地址（地址可以不存在）。
 }
