@@ -5,8 +5,12 @@
 
 ![image](https://github.com/lvfaqiang/Multi-Image-Selector/blob/master/android_multi_img_select.gif)
 
-引用 Glide 版本：
-      
+依赖地址
+
+    compile 'com.lfq:MultiImageSelector:1.0' 
+    
+引用 Glide 版本
+
     compile 'com.github.bumptech.glide:glide:3.7.0'
 
 项目的 manifest 文件中，添加配置 Activity:
