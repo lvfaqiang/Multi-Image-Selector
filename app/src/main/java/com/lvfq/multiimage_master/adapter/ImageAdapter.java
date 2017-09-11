@@ -11,6 +11,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.lvfq.multiimage_master.MainActivity;
 import com.lvfq.multiimage_master.R;
 import com.lvfq.multiimage_master.impl.IDeletePicCallback;
 import com.lvfq.multiimage_master.util.ViewHolder;
@@ -21,7 +22,7 @@ import java.util.List;
 import me.lvfq.multi_image_selector.ImagePagerActivity;
 import me.lvfq.multi_image_selector.MultiImageSelectorActivity;
 
-import static com.lvfq.multiimage_master.MainActivity.REQUEST_IMAGE;
+
 
 /**
  * ImageAdapter
@@ -35,6 +36,10 @@ public class ImageAdapter extends BaseAdapter {
     private List<String> list;
     private Context context;
     private IDeletePicCallback callback;
+    private int maxCount = 9;
+
+    private boolean isShowCamera;
+    private boolean isSingle;
 
     public void setCallback(IDeletePicCallback callback) {
         this.callback = callback;
@@ -45,13 +50,43 @@ public class ImageAdapter extends BaseAdapter {
         this.context = context;
     }
 
+    /**
+     * 设置最多可选图片数量
+     *
+     * @param maxCount
+     */
+    public void setMaxCount(int maxCount) {
+        this.maxCount = maxCount;
+    }
+
+    /**
+     * 是否显示拍照
+     *
+     * @param showCamera
+     */
+    public void setShowCamera(boolean showCamera) {
+        isShowCamera = showCamera;
+    }
+
+    /**
+     * 是否单选
+     *
+     * @param single
+     */
+    public void setSingle(boolean single) {
+        isSingle = single;
+        if (isSingle) {
+            maxCount = 1;
+        }
+    }
+
     @Override
     public int getCount() {
         if (list == null || list.size() <= 0) {
             return 1;
         } else {
-            if (list.size() >= 9) {
-                return 9;
+            if (list.size() >= maxCount) {
+                return maxCount;
             } else {
                 return list.size() + 1;
             }
@@ -68,6 +103,12 @@ public class ImageAdapter extends BaseAdapter {
         return position;
     }
 
+    private void isShowAdd(ImageView iv1, ImageView iv2, ImageView iv3, boolean isShow) {
+        iv1.setVisibility(isShow ? View.VISIBLE : View.GONE);
+        iv2.setVisibility(isShow ? View.GONE : View.VISIBLE);
+        iv3.setVisibility(isShow ? View.GONE : View.VISIBLE);
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
@@ -76,20 +117,14 @@ public class ImageAdapter extends BaseAdapter {
         ImageView iv_del = ViewHolder.get(convertView, R.id.iv_item_del);
         ImageView iv_add = ViewHolder.get(convertView, R.id.iv_item_add);
         final ImageView iv_pic = ViewHolder.get(convertView, R.id.iv_item_pic);
-        if (list.size() >= 9 && position == 8) {
-            iv_add.setVisibility(View.GONE);
-            iv_del.setVisibility(View.VISIBLE);
-            iv_pic.setVisibility(View.VISIBLE);
+        if (list.size() >= maxCount && position == maxCount - 1) {
+            isShowAdd(iv_add, iv_del, iv_pic, false);
             Glide.with(context).load(list.get(position)).diskCacheStrategy(DiskCacheStrategy.ALL).centerCrop().into(iv_pic);
         } else {
             if (position == list.size()) {
-                iv_add.setVisibility(View.VISIBLE);
-                iv_del.setVisibility(View.GONE);
-                iv_pic.setVisibility(View.GONE);
+                isShowAdd(iv_add, iv_del, iv_pic, true);
             } else {
-                iv_add.setVisibility(View.GONE);
-                iv_del.setVisibility(View.VISIBLE);
-                iv_pic.setVisibility(View.VISIBLE);
+                isShowAdd(iv_add, iv_del, iv_pic, false);
                 Glide.with(context).load(list.get(position)).diskCacheStrategy(DiskCacheStrategy.ALL).centerCrop().into(iv_pic);
             }
         }
@@ -98,8 +133,13 @@ public class ImageAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, MultiImageSelectorActivity.class);
-                intent.putExtra(MultiImageSelectorActivity.EXTRA_SELECT_COUNT, 9 - list.size());
-                ((Activity) context).startActivityForResult(intent, REQUEST_IMAGE);
+                //设置剩余可选择数量
+                intent.putExtra(MultiImageSelectorActivity.EXTRA_SELECT_COUNT, maxCount - list.size());
+                // 设置选择模式（SINGLE 单选， MULTI 多选)
+                intent.putExtra(MultiImageSelectorActivity.EXTRA_SELECT_MODE, isSingle ? MultiImageSelectorActivity.MODE_SINGLE : MultiImageSelectorActivity.MODE_MULTI);
+                // 是否显示相机
+                intent.putExtra(MultiImageSelectorActivity.EXTRA_SHOW_CAMERA, isShowCamera);
+                ((Activity) context).startActivityForResult(intent, MainActivity.REQUEST_IMAGE);
             }
         });
         final int pos = position;
@@ -117,9 +157,9 @@ public class ImageAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, ImagePagerActivity.class);
+                // 设置显示的当前图片下标
                 intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_INDEX, pos);
-//                ArrayList<String> list = new ArrayList<String>();
-//                list.add("file://" + img.path);
+                // 设置显示的图片地址列表
                 intent.putStringArrayListExtra(ImagePagerActivity.EXTRA_IMAGE_URLS, (ArrayList<String>) list);
                 context.startActivity(intent);
             }

@@ -17,12 +17,6 @@
         android:background="#88000000"
         android:visibility="gone" />
 
-    <View
-        android:id="@+id/view_my_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="30dp" />
-
     <ImageView
         android:id="@+id/checkmark"
         android:layout_width="wrap_content"

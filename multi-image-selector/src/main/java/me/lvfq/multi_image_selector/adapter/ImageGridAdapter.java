@@ -196,21 +196,6 @@ public class ImageGridAdapter extends BaseAdapter {
             }
             if (holde != null) {
                 holde.bindData(getItem(i));
-                holde.view_my_view.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-//                        Intent intent = new Intent(mContext, ImagePagerActivity.class);
-//                        intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_INDEX, 0);
-//                        if (i > mImages.size())
-//                            return;
-//                        Image img = mImages.get(i - 1);
-//                        ArrayList<String> list = new ArrayList<String>();
-//                        LogUtil.i("ImagePath = " + img.path);
-//                        list.add("file://" + img.path);
-//                        intent.putStringArrayListExtra(ImagePagerActivity.EXTRA_IMAGE_URLS, list);
-//                        mContext.startActivity(intent);
-                    }
-                });
             }
         }
 
@@ -226,13 +211,12 @@ public class ImageGridAdapter extends BaseAdapter {
     class ViewHolde {
         ImageView image;
         ImageView indicator;
-        View mask, view_my_view;
+        View mask;
 
 
         ViewHolde(View view) {
             image = (ImageView) view.findViewById(R.id.image);
             indicator = (ImageView) view.findViewById(R.id.checkmark);
-            view_my_view = view.findViewById(R.id.view_my_view);
             mask = view.findViewById(R.id.mask);
             view.setTag(this);
         }

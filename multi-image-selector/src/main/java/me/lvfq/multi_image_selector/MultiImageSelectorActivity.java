@@ -184,5 +184,6 @@ public class MultiImageSelectorActivity extends FragmentActivity implements Mult
                 finish();
             }
         }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 }
