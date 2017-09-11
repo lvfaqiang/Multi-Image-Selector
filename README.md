@@ -18,7 +18,9 @@
     <activity android:name="me.lvfq.multi_image_selector.MultiImageSelectorActivity" /> 
     <activity android:name="me.lvfq.multi_image_selector.ImagePagerActivity" />
 
-选择图片用法：
+### 选择图片用法：
+
+调用：
 
     Intent intent = new Intent(context, MultiImageSelectorActivity.class);
     //设置剩余可选择数量
@@ -28,8 +30,24 @@
     // 是否显示相机
     intent.putExtra(MultiImageSelectorActivity.EXTRA_SHOW_CAMERA, isShowCamera);
     ((Activity) context).startActivityForResult(intent, MainActivity.REQUEST_IMAGE);
+    
+接收：
 
-查看大图用法：
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != RESULT_OK) {
+            return;
+        }
+        if (requestCode == REQUEST_IMAGE) {
+            List<String> list = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
+            if (list != null && list.size() >= 0) {
+                mList.addAll(list);
+                mAdapter.notifyDataSetChanged();
+            }
+        }
+    }
+
+### 查看大图用法：
     
     Intent intent = new Intent(context, ImagePagerActivity.class);
     // 设置显示的当前图片下标
