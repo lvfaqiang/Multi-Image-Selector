@@ -4,6 +4,7 @@ import android.content.Context;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.io.File;
 
@@ -18,12 +19,22 @@ import java.io.File;
 public class ImageLoadUtil {
 
     public static void loadImg(Context context, File file, int placeholderResId, int targetWidth, int targetHeight, ImageView imageView) {
-        Glide.with(context).load(file).placeholder(placeholderResId).override(targetWidth, targetHeight).centerCrop().into(imageView);
+        RequestOptions options = new RequestOptions()
+                .placeholder(placeholderResId)
+                .centerCrop()
+                .override(targetWidth, targetHeight);
+
+        Glide.with(context).load(file).apply(options).into(imageView);
     }
 
 
     public static void loadImg(Context context, File file, int targetWidth, int targetHeight, ImageView imageView, int errorId) {
-        Glide.with(context).load(file).error(errorId).override(targetWidth, targetHeight).centerCrop().into(imageView);
+        RequestOptions options = new RequestOptions()
+                .error(errorId)
+                .centerCrop()
+                .override(targetWidth, targetHeight);
+
+        Glide.with(context).load(file).apply(options).into(imageView);
     }
 
     public static void resumeTag(Context context) {

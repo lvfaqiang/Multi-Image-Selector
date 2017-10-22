@@ -10,7 +10,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.lvfq.multiimage_master.MainActivity;
 import com.lvfq.multiimage_master.R;
 import com.lvfq.multiimage_master.impl.IDeletePicCallback;
@@ -21,7 +20,6 @@ import java.util.List;
 
 import me.lvfq.multi_image_selector.ImagePagerActivity;
 import me.lvfq.multi_image_selector.MultiImageSelectorActivity;
-
 
 
 /**
@@ -119,13 +117,13 @@ public class ImageAdapter extends BaseAdapter {
         final ImageView iv_pic = ViewHolder.get(convertView, R.id.iv_item_pic);
         if (list.size() >= maxCount && position == maxCount - 1) {
             isShowAdd(iv_add, iv_del, iv_pic, false);
-            Glide.with(context).load(list.get(position)).diskCacheStrategy(DiskCacheStrategy.ALL).centerCrop().into(iv_pic);
+            Glide.with(context).load(list.get(position)).into(iv_pic);
         } else {
             if (position == list.size()) {
                 isShowAdd(iv_add, iv_del, iv_pic, true);
             } else {
                 isShowAdd(iv_add, iv_del, iv_pic, false);
-                Glide.with(context).load(list.get(position)).diskCacheStrategy(DiskCacheStrategy.ALL).centerCrop().into(iv_pic);
+                Glide.with(context).load(list.get(position)).into(iv_pic);
             }
         }
 

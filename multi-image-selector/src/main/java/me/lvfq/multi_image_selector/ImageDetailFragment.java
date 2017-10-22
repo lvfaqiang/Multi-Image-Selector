@@ -2,6 +2,7 @@ package me.lvfq.multi_image_selector;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,9 +13,9 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 
 import me.lvfq.multi_image_selector.view.bigimage.PhotoViewAttacher;
 
@@ -68,44 +69,68 @@ public class ImageDetailFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Glide.with(getActivity()).load(mImageUrl).placeholder(R.drawable.default_error).into(new GlideDrawableImageViewTarget(mImageView) {
+        Glide.with(getActivity()).load(mImageUrl).apply(new RequestOptions().placeholder(R.drawable.default_error)).into(new SimpleTarget<Drawable>() {
 
             @Override
-            public void onLoadStarted(Drawable placeholder) {
+            public void onLoadStarted(@Nullable Drawable placeholder) {
                 Log.i("lfq", "onLoadStarted  ");
                 progressBar.setVisibility(View.VISIBLE);
             }
 
             @Override
-            public void onLoadFailed(Exception e, Drawable errorDrawable) {
-                Log.i("lfq", "onLoadFailed  ");
+            public void onLoadFailed(@Nullable Drawable errorDrawable) {
                 progressBar.setVisibility(View.GONE);
                 Toast.makeText(getActivity(), "图片加载失败", Toast.LENGTH_SHORT).show();
-
             }
 
 
             @Override
-            protected void setResource(GlideDrawable resource) {
-                Log.i("lfq", "setResource : " + resource.toString());
-            }
-
-
-            @Override
-            public void onLoadCleared(Drawable placeholder) {
-                Log.i("lfq", "onLoadCleared  ");
-                super.onLoadCleared(placeholder);
-            }
-
-            @Override
-            public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
-                Log.i("lfq", "onResourceReady");
+            public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
+                Log.i("lfq", "onResourceReady  ");
                 progressBar.setVisibility(View.GONE);
-                super.onResourceReady(resource, glideAnimation);
                 mImageView.setImageDrawable(resource);
                 mAttacher.update();
             }
+
         });
+//        Glide.with(getActivity()).load(mImageUrl).apply(RequestOptions.placeholderOf(R.drawable.default_error)).into(new GlideDrawableImageViewTarget(mImageView) {
+//
+//            @Override
+//            public void onLoadStarted(Drawable placeholder) {
+//                Log.i("lfq", "onLoadStarted  ");
+//                progressBar.setVisibility(View.VISIBLE);
+//            }
+//
+//            @Override
+//            public void onLoadFailed(Exception e, Drawable errorDrawable) {
+//                Log.i("lfq", "onLoadFailed  ");
+//                progressBar.setVisibility(View.GONE);
+//                Toast.makeText(getActivity(), "图片加载失败", Toast.LENGTH_SHORT).show();
+//
+//            }
+//
+//
+//            @Override
+//            protected void setResource(GlideDrawable resource) {
+//                Log.i("lfq", "setResource : " + resource.toString());
+//            }
+//
+//
+//            @Override
+//            public void onLoadCleared(Drawable placeholder) {
+//                Log.i("lfq", "onLoadCleared  ");
+//                super.onLoadCleared(placeholder);
+//            }
+//
+//            @Override
+//            public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+//                Log.i("lfq", "onResourceReady");
+//                progressBar.setVisibility(View.GONE);
+//                super.onResourceReady(resource, glideAnimation);
+//                mImageView.setImageDrawable(resource);
+//                mAttacher.update();
+//            }
+//        });
 //        final ImageLoader imageLoader = ImageLoader.getInstance();
 //        imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
 //        imageLoader.getInstance().displayImage(mImageUrl, mImageView,
