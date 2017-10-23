@@ -13,7 +13,7 @@ import com.lvfq.multiimage_master.impl.IDeletePicCallback;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.lvfq.multi_image_selector.MultiImageSelectorActivity;
+import me.lvfq.multi_image_selector.MultiImageSelector;
 
 public class MainActivity extends FragmentActivity implements RadioGroup.OnCheckedChangeListener {
 
@@ -87,7 +87,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
             return;
         }
         if (requestCode == REQUEST_IMAGE) {
-            List<String> list = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
+            List<String> list = MultiImageSelector.getResults(data);
             if (list != null && list.size() >= 0) {
                 mList.addAll(list);
                 mAdapter.notifyDataSetChanged();

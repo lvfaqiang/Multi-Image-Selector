@@ -2,7 +2,6 @@ package com.lvfq.multiimage_master.adapter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +17,8 @@ import com.lvfq.multiimage_master.util.ViewHolder;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.lvfq.multi_image_selector.ImagePagerActivity;
-import me.lvfq.multi_image_selector.MultiImageSelectorActivity;
+import me.lvfq.multi_image_selector.MultiImageSelector;
+import me.lvfq.multi_image_selector.MultiImageShowBig;
 
 
 /**
@@ -130,14 +129,21 @@ public class ImageAdapter extends BaseAdapter {
         iv_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, MultiImageSelectorActivity.class);
-                //设置剩余可选择数量
-                intent.putExtra(MultiImageSelectorActivity.EXTRA_SELECT_COUNT, maxCount - list.size());
-                // 设置选择模式（SINGLE 单选， MULTI 多选)
-                intent.putExtra(MultiImageSelectorActivity.EXTRA_SELECT_MODE, isSingle ? MultiImageSelectorActivity.MODE_SINGLE : MultiImageSelectorActivity.MODE_MULTI);
-                // 是否显示相机
-                intent.putExtra(MultiImageSelectorActivity.EXTRA_SHOW_CAMERA, isShowCamera);
-                ((Activity) context).startActivityForResult(intent, MainActivity.REQUEST_IMAGE);
+//                Intent intent = new Intent(context, MultiImageSelectorActivity.class);
+//                //设置剩余可选择数量
+//                intent.putExtra(MultiImageSelectorActivity.EXTRA_SELECT_COUNT, maxCount - list.size());
+//                // 设置选择模式（SINGLE 单选， MULTI 多选)
+//                intent.putExtra(MultiImageSelectorActivity.EXTRA_SELECT_MODE, isSingle ? MultiImageSelectorActivity.MODE_SINGLE : MultiImageSelectorActivity.MODE_MULTI);
+//                // 是否显示相机
+//                intent.putExtra(MultiImageSelectorActivity.EXTRA_SHOW_CAMERA, isShowCamera);
+//                ((Activity) context).startActivityForResult(intet, MainActivity.REQUEST_IMAGE);
+                MultiImageSelector selector = MultiImageSelector.create()
+                        .maxCount(maxCount - list.size())
+                        .showCamera(isShowCamera);
+                if (isSingle) {
+                    selector.single();
+                } else selector.multi();
+                selector.start((Activity) context, MainActivity.REQUEST_IMAGE);
             }
         });
         final int pos = position;
@@ -154,12 +160,16 @@ public class ImageAdapter extends BaseAdapter {
         iv_pic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ImagePagerActivity.class);
-                // 设置显示的当前图片下标
-                intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_INDEX, pos);
-                // 设置显示的图片地址列表
-                intent.putStringArrayListExtra(ImagePagerActivity.EXTRA_IMAGE_URLS, (ArrayList<String>) list);
-                context.startActivity(intent);
+//                Intent intent = new Intent(context, ImagePagerActivity.class);
+//                // 设置显示的当前图片下标
+//                intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_INDEX, pos);
+//                // 设置显示的图片地址列表
+//                intent.putStringArrayListExtra(ImagePagerActivity.EXTRA_IMAGE_URLS, (ArrayList<String>) list);
+//                context.startActivity(intent);
+                MultiImageShowBig.create()
+                        .index(pos)
+                        .imageUrls((ArrayList<String>) list)
+                        .show(context);
             }
         });
 
