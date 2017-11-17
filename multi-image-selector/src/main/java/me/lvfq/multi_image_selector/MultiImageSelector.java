@@ -49,6 +49,20 @@ public class MultiImageSelector {
     }
 
     /**
+     * 获取单选模式下获取的图片结果
+     *
+     * @param data
+     * @return
+     */
+    public static String getSingleResult(Intent data) {
+        List<String> list = getResults(data);
+        if (list == null || list.size() <= 0) {
+            return "";
+        }
+        return list.get(0);
+    }
+
+    /**
      * 是否可选相机
      *
      * @param bool
