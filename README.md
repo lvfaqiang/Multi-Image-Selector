@@ -5,18 +5,22 @@
 
 ![image](https://github.com/lvfaqiang/Multi-Image-Selector/blob/master/multi_select.gif)
 
-依赖地址
+##### 依赖地址
 
-    compile 'com.lfq:MultiImageSelector:1.4' 
+    compile 'com.lfq:MultiImageSelector:1.5' 
     
-需要在项目中引入 Glide 版本
+##### 需要在项目中引入 Glide 版本
 
     compile 'com.github.bumptech.glide:glide:4.2.0'
 
-项目的 manifest 文件中，添加配置 Activity:
+##### 项目的 manifest 文件中，添加配置 Activity: `(从 1.5 版本开始，不用配置此项)`
 
     <activity android:name="me.lvfq.multi_image_selector.MultiImageSelectorActivity" /> 
     <activity android:name="me.lvfq.multi_image_selector.ImagePagerActivity" />
+
+##### 在 manifest 中给调用选择图片的 Activity 添加以下属性（ Fragment ，则配置其所在 Activity） `（解决部分机型拍照回调图片丢失问题）`
+ 
+    android:configChanges="orientation|keyboardHidden|keyboard|screenSize"
 
 ### 选择图片用法：
 链式调用( v1.4 新增)：
