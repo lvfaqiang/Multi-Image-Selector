@@ -36,7 +36,6 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import me.lvfq.multi_image_selector.adapter.FolderAdapter;
@@ -46,6 +45,7 @@ import me.lvfq.multi_image_selector.bean.Image;
 import me.lvfq.multi_image_selector.utils.FileUtils;
 import me.lvfq.multi_image_selector.utils.MultiImageLoader;
 import me.lvfq.multi_image_selector.utils.TimeUtils;
+import me.lvfq.multi_image_selector.utils.UriParse;
 
 /**
  * 图片选择Fragment
@@ -365,7 +365,8 @@ public class MultiImageSelectorFragment extends Fragment {
         if (requestCode == REQUEST_CAMERA) {
             if (resultCode == Activity.RESULT_OK) {
                 if (mCaptureUri != null) {
-                    mTmpFile = FileUtils.scal(mCaptureUri);
+                    String path = UriParse.getFilePathWithUri(mCaptureUri, getActivity());
+                    mTmpFile = new File(path);
                     mCallback.onCameraShot(mTmpFile);
                 }
             } else {
@@ -375,19 +376,6 @@ public class MultiImageSelectorFragment extends Fragment {
             }
         }
 
-//        if (requestCode == REQUEST_CAMERA) {
-//            if (resultCode == Activity.RESULT_OK) {
-//                if (mTmpFile != null) {
-//                    if (mCallback != null) {
-//                        mCallback.onCameraShot(mTmpFile);
-//                    }
-//                }
-//            } else {
-//                if (mTmpFile != null && mTmpFile.exists()) {
-//                    mTmpFile.delete();
-//                }
-//            }
-//        }
     }
 
     @Override
@@ -435,34 +423,29 @@ public class MultiImageSelectorFragment extends Fragment {
     /**
      * 选择相机
      */
-    private String imagePath = "";
     private Uri mCaptureUri;
 
     private void showCameraAction() {
         // 跳转到系统照相机
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (cameraIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-            // 设置系统相机拍照后的输出路径
-            // 创建临时文件
-            imagePath = getOutputImageUri();
-            mCaptureUri = Uri.fromFile(new File(FileUtils.mImageFileCachePath()
-                    + imagePath));
             /**
              * 调用系统照相机
              */
+
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            // 设置系统相机拍照后的输出路径
+            mCaptureUri = Uri.fromFile(new File(FileUtils.mImageFileCachePath()));
+
+            if (Build.VERSION.SDK_INT >= 23) {
+                mCaptureUri = UriParse.convertFileUriToFileProviderUri(getActivity(), mCaptureUri);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            }
             intent.putExtra(MediaStore.EXTRA_OUTPUT, mCaptureUri);
             startActivityForResult(intent, REQUEST_CAMERA);
-//            mTmpFile = FileUtils.createTmpFile(getActivity());
-//            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mTmpFile));
-//            startActivityForResult(cameraIntent, REQUEST_CAMERA);
         } else {
             Toast.makeText(getActivity(), R.string.msg_no_camera, Toast.LENGTH_SHORT).show();
         }
-    }
-
-    private String getOutputImageUri() {
-        return new Date().getTime() + ".png";
     }
 
     /**

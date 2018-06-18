@@ -7,9 +7,22 @@
 
     <application android:allowBackup="true">
 
-        <activity android:name="me.lvfq.multi_image_selector.MultiImageSelectorActivity" />
-        <activity android:name="me.lvfq.multi_image_selector.ImagePagerActivity" />
+        <activity
+            android:name="me.lvfq.multi_image_selector.MultiImageSelectorActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="me.lvfq.multi_image_selector.ImagePagerActivity"
+            android:screenOrientation="portrait" />
 
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>

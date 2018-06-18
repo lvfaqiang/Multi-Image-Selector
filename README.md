@@ -1,5 +1,5 @@
 # MultiImage-Selector
-项目中常用的多图选择，查看大图整理, 已适配 Android 6.0 权限。
+项目中常用的多图选择，查看大图整理, 已适配 Android 7.0 权限。
 
 效果图：
 
@@ -7,23 +7,25 @@
 
 ##### 依赖地址
 
-    compile 'com.lfq:MultiImageSelector:1.5' 
+    implementation 'com.lfq:MultiImageSelector:1.6'
     
-##### 需要在项目中引入 Glide 版本
+##### Module 中默认引入 Glide 版本
 
-    compile 'com.github.bumptech.glide:glide:4.2.0'
+    implementation 'com.github.bumptech.glide:glide:4.7.1'
 
 ##### 项目的 manifest 文件中，添加配置 Activity: `(从 1.5 版本开始，不用配置此项)`
 
     <activity android:name="me.lvfq.multi_image_selector.MultiImageSelectorActivity" /> 
     <activity android:name="me.lvfq.multi_image_selector.ImagePagerActivity" />
 
-##### 在 manifest 中给调用选择图片的 Activity 添加以下属性（ Fragment ，则配置其所在 Activity） `（解决部分机型拍照回调图片丢失问题）`
+##### （可选）在 manifest 中给调用选择图片的 Activity 添加以下属性（ Fragment ，则配置其所在 Activity） `（解决部分机型拍照回调图片丢失问题）`
  
     android:configChanges="orientation|keyboardHidden|keyboard|screenSize"
 
 
 ### 配置加载图片方式 (默认 Glide)
+这个配置通常也可以不用去管它，看个人心情。
+
 在 Application 中调用一下代码 ：
 
         MultiImageLoader.getInstance().init(new IImageLoad() {
@@ -109,6 +111,8 @@
     
 #   
 ### Log
+
+ - 适配 Android 7.0， targetVersion = 24.
 
  - 新增 MultiImageLoader 配置加载图片方式。
 

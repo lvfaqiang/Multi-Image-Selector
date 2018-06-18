@@ -85,21 +85,16 @@ public class FileUtils {
     }
 
     public static Uri createImageFile() {
-        return Uri.parse(mImageFileCachePath() + getOutputImageUri());
+        return Uri.parse(mImageFileCachePath());
     }
 
     public static String mImageFileCachePath() {
-        String s = Environment.getExternalStorageDirectory() + File.separator
-                + "clould" + File.separator;
+        String s = Environment.getExternalStorageDirectory() + "/temp/" + System.currentTimeMillis() + ".jpg";
         File file = new File(s);
-        if (!file.exists()) {
-            file.mkdirs();
+        if (!file.getParentFile().exists()) {
+            file.getParentFile().mkdirs();
         }
         return s;
-    }
-
-    private static String getOutputImageUri() {
-        return new Date().getTime() + ".png";
     }
 
     public static void copyFileUsingFileChannels(File source, File dest) {
