@@ -8,10 +8,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.lvfq.multiimage_master.MainActivity;
 import com.lvfq.multiimage_master.R;
 import com.lvfq.multiimage_master.impl.IDeletePicCallback;
+import com.lvfq.multiimage_master.util.ImageLoadUtil;
 import com.lvfq.multiimage_master.util.ViewHolder;
 
 import java.util.ArrayList;
@@ -116,27 +116,19 @@ public class ImageAdapter extends BaseAdapter {
         final ImageView iv_pic = ViewHolder.get(convertView, R.id.iv_item_pic);
         if (list.size() >= maxCount && position == maxCount - 1) {
             isShowAdd(iv_add, iv_del, iv_pic, false);
-            Glide.with(context).load(list.get(position)).into(iv_pic);
+            ImageLoadUtil.loadImg(context, list.get(position), iv_pic);
         } else {
             if (position == list.size()) {
                 isShowAdd(iv_add, iv_del, iv_pic, true);
             } else {
                 isShowAdd(iv_add, iv_del, iv_pic, false);
-                Glide.with(context).load(list.get(position)).into(iv_pic);
+                ImageLoadUtil.loadImg(context, list.get(position), iv_pic);
             }
         }
 
         iv_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(context, MultiImageSelectorActivity.class);
-//                //设置剩余可选择数量
-//                intent.putExtra(MultiImageSelectorActivity.EXTRA_SELECT_COUNT, maxCount - list.size());
-//                // 设置选择模式（SINGLE 单选， MULTI 多选)
-//                intent.putExtra(MultiImageSelectorActivity.EXTRA_SELECT_MODE, isSingle ? MultiImageSelectorActivity.MODE_SINGLE : MultiImageSelectorActivity.MODE_MULTI);
-//                // 是否显示相机
-//                intent.putExtra(MultiImageSelectorActivity.EXTRA_SHOW_CAMERA, isShowCamera);
-//                ((Activity) context).startActivityForResult(intet, MainActivity.REQUEST_IMAGE);
                 MultiImageSelector selector = MultiImageSelector.create()
                         .maxCount(maxCount - list.size())
                         .showCamera(isShowCamera);

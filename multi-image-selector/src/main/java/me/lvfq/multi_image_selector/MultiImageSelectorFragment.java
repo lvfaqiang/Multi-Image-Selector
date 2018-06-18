@@ -21,7 +21,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v7.widget.ListPopupWindow;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +30,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ListPopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,7 +44,7 @@ import me.lvfq.multi_image_selector.adapter.ImageGridAdapter;
 import me.lvfq.multi_image_selector.bean.Folder;
 import me.lvfq.multi_image_selector.bean.Image;
 import me.lvfq.multi_image_selector.utils.FileUtils;
-import me.lvfq.multi_image_selector.utils.ImageLoadUtil;
+import me.lvfq.multi_image_selector.utils.MultiImageLoader;
 import me.lvfq.multi_image_selector.utils.TimeUtils;
 
 /**
@@ -206,9 +206,9 @@ public class MultiImageSelectorFragment extends Fragment {
             public void onScrollStateChanged(AbsListView absListView, int state) {
 
                 if (state == SCROLL_STATE_IDLE || state == SCROLL_STATE_TOUCH_SCROLL) {
-                    ImageLoadUtil.resumeTag(getActivity());
+                    MultiImageLoader.getInstance().resumeTag(getActivity());
                 } else {
-                    ImageLoadUtil.pauseTag(getActivity());
+                    MultiImageLoader.getInstance().pauseTag(getActivity());
                 }
 
                 if (state == SCROLL_STATE_IDLE) {

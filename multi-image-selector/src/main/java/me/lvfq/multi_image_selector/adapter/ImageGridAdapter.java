@@ -14,7 +14,7 @@ import java.util.List;
 
 import me.lvfq.multi_image_selector.R;
 import me.lvfq.multi_image_selector.bean.Image;
-import me.lvfq.multi_image_selector.utils.ImageLoadUtil;
+import me.lvfq.multi_image_selector.utils.MultiImageLoader;
 
 /**
  * 图片Adapter
@@ -242,7 +242,7 @@ public class ImageGridAdapter extends BaseAdapter {
 
             if (mItemSize > 0) {
                 // 显示图片
-                ImageLoadUtil.loadImg(mContext, imageFile, R.drawable.default_error, mItemSize, mItemSize, image);
+                MultiImageLoader.getInstance().loadImg(mContext, imageFile, R.drawable.default_error, mItemSize, mItemSize, image);
             }
         }
     }

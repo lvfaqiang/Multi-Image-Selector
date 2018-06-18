@@ -22,6 +22,32 @@
  
     android:configChanges="orientation|keyboardHidden|keyboard|screenSize"
 
+
+### 配置加载图片方式 (默认 Glide)
+在 Application 中调用一下代码 ：
+
+        MultiImageLoader.getInstance().init(new IImageLoad() {
+            @Override
+            public void loadImg(Context context, File file, int placeholderResId, int targetWidth, int targetHeight, ImageView imageView) {
+
+            }
+
+            @Override
+            public void loadImg(Context context, File file, int targetWidth, int targetHeight, ImageView imageView, int errorId) {
+
+            }
+
+            @Override
+            public void resumeTag(Context context) {
+
+            }
+
+            @Override
+            public void pauseTag(Context context) {
+
+            }
+        });
+
 ### 选择图片用法：
 链式调用( v1.4 新增)：
 
@@ -54,7 +80,7 @@
             return;
         }
         if (requestCode == REQUEST_IMAGE) {
-            List<String> list = MultiImageSelector.getResults(data); // - v1.4 新增用法
+            List<String> list = MultiImageSelector.getResults(data); // getSingleResult(data) 获取单张图片结果   // - v1.4 新增用法
             // List<String> list = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
             if (list != null && list.size() >= 0) {
                 mList.addAll(list);
@@ -83,6 +109,10 @@
     
 #   
 ### Log
+
+ - 新增 MultiImageLoader 配置加载图片方式。
+
+    调用方式：在 Application 中 调用 MultiImageLoader.getInstance().init(IImageload)
 
  - 2017-10-23
  

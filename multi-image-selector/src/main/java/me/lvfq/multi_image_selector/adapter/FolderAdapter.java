@@ -14,7 +14,7 @@ import java.util.List;
 
 import me.lvfq.multi_image_selector.R;
 import me.lvfq.multi_image_selector.bean.Folder;
-import me.lvfq.multi_image_selector.utils.ImageLoadUtil;
+import me.lvfq.multi_image_selector.utils.MultiImageLoader;
 
 /**
  * 文件夹Adapter
@@ -82,7 +82,7 @@ public class FolderAdapter extends BaseAdapter {
                 holder.size.setText(getTotalImageSize() + "张");
                 if (mFolders.size() > 0) {
                     Folder f = mFolders.get(0);
-                    ImageLoadUtil.loadImg(mContext, new File(f.cover.path), mImageSize, mImageSize, holder.cover, R.drawable.default_error);
+                    MultiImageLoader.getInstance().loadImg(mContext, new File(f.cover.path), mImageSize, mImageSize, holder.cover, R.drawable.default_error);
                 }
             } else {
                 holder.bindData(getItem(i));
@@ -135,7 +135,7 @@ public class FolderAdapter extends BaseAdapter {
             name.setText(data.name);
             size.setText(data.images.size() + "张");
             // 显示图片
-            ImageLoadUtil.loadImg(mContext, new File(data.cover.path), R.drawable.default_error, mImageSize, mImageSize, cover);
+            MultiImageLoader.getInstance().loadImg(mContext, new File(data.cover.path), R.drawable.default_error, mImageSize, mImageSize, cover);
             // TODO 选择标识
         }
     }
